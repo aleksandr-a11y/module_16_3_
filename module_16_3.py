@@ -12,7 +12,7 @@ async def get_users() -> dict:
 @app.post('/user/{username}/{age}')
 async def post_users(username: Annotated[str, Path(min_length=3, max_length=20, regex="^[a-zA-Z0-9_-]+$")],
                      age: Annotated[int, Path(ge=18, le=100, description="Age from 18 to 100")]) -> str:
-    user_id = str(int(max(users, key=int)) + 1)
+    user_id = str(max(map(int, users.keys()), default=0) + 1)
     users[user_id] = f"Имя: {username}, возраст: {age}"
     return f"User {user_id} is registered"
 
